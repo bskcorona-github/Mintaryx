@@ -1,44 +1,50 @@
+import { ChangeEvent } from "react";
 import { clsx } from "clsx";
 
 interface InputProps {
   label: string;
-  type?: "text" | "number" | "email";
-  value: string | number;
-  onChange: (value: string) => void;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  type?: "text" | "number" | "email" | "password";
   placeholder?: string;
   required?: boolean;
   className?: string;
-  id?: string;
+  error?: string;
 }
 
 export default function Input({
   label,
-  type = "text",
   value,
   onChange,
+  type = "text",
   placeholder,
   required = false,
   className,
-  id,
+  error,
 }: InputProps) {
   return (
     <div className={clsx("mb-4", className)}>
-      <label
-        htmlFor={id}
-        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-      >
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       <input
-        id={id}
         type={type}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={onChange}
         placeholder={placeholder}
         required={required}
-        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+        className={clsx(
+          "w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent",
+          error
+            ? "border-red-300 dark:border-red-600"
+            : "border-gray-300 dark:border-gray-600",
+          "bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+        )}
       />
+      {error && (
+        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
+      )}
     </div>
   );
 }

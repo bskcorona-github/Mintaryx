@@ -1,39 +1,29 @@
-// Google Analytics 4 トラッキング
+// Google Analytics 4 追跡
+export const trackPageView = (title: string) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('config', 'GA_MEASUREMENT_ID', {
+      page_title: title,
+      page_location: window.location.href,
+    });
+  }
+};
+
+export const trackEvent = (eventName: string, parameters?: Record<string, any>) => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', eventName, parameters);
+  }
+};
+
+export const trackToolUsage = (toolName: string, data?: Record<string, any>) => {
+  trackEvent('tool_usage', {
+    tool_name: toolName,
+    ...data,
+  });
+};
+
+// TypeScript用のgtagの型定義
 declare global {
   interface Window {
     gtag: (...args: any[]) => void;
   }
 }
-
-export const trackEvent = (
-  eventName: string,
-  parameters?: Record<string, any>
-) => {
-  if (typeof window !== "undefined" && window.gtag) {
-    window.gtag("event", eventName, {
-      ...parameters,
-      timestamp: new Date().toISOString(),
-    });
-  }
-};
-
-export const trackToolUsage = (toolName: string, success: boolean = true) => {
-  trackEvent("tool_usage", {
-    tool_name: toolName,
-    success: success,
-  });
-};
-
-export const trackPageView = (pageName: string) => {
-  trackEvent("page_view", {
-    page_title: pageName,
-  });
-};
-
-// AdSense収益最適化のためのクリック追跡
-export const trackAdInteraction = (adUnit: string, action: string) => {
-  trackEvent("ad_interaction", {
-    ad_unit: adUnit,
-    action: action,
-  });
-};

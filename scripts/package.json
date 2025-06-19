@@ -1,12 +1,9 @@
 {
   "name": "mintaryx-scripts",
   "version": "1.0.0",
-  "description": "Mintaryx app generation scripts",
   "main": "generate-app.js",
-  "scripts": {
-    "generate": "node generate-app.js"
-  },
-  "bin": {
-    "generate-app": "./generate-app.js"
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
   }
 }
